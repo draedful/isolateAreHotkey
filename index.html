@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div class="parent area pass-through" id="globalParent" data-passthrough="true">
+        <input >
+        <div class="child area" tabindex="1" id="f1" data-key="112">
+
+        </div>
+        <div class="child area" tabindex="2" id="f2" data-key="113">
+
+        </div>
+        <div class="child area" tabindex="3" id="f3" data-key="114">
+
+        </div>
+    </div>
+    <style>
+        *:focus{
+            background: #e3e3e3;
+        }
+        html,body{
+            width:100%;
+            height:100%;
+        }
+        .parent{
+            width:600px;
+            height:600px;
+            border: 1px solid red;
+        }
+        .child{
+            width: 33%;
+            height: 33%;
+            border: 1px solid blue;
+        }
+    </style>
+    <script src="helpers.js"></script>
+    <script src="isolate_area.js"></script>
+    <script src="hotkeys.js"></script>
+
+    <script>
+        window.onload = function(){
+            console.log('start');
+            document.addEventListener('keyup', function(e){
+                console.log('document', e)
+            })
+            var elem = document.querySelector('#globalParent');
+            window.parentHandler = new window.IsolateArea(elem, elem.dataset.passthrough);
+
+            var f1 = document.querySelector('#f1')
+            window.f1 = new getHotkey(f1, f1.dataset.key, function(e){
+                console.debug('f1', e);
+            });
+
+            var f2 = document.querySelector('#f2')
+            window.f1 = new getHotkey(f2, f2.dataset.key, function(e){
+                console.debug('f2', e);
+            });
+
+            var f3 = document.querySelector('#f1')
+            window.f1 = new getHotkey(f3, f3.dataset.key, function(e){
+                console.debug('f3', e);
+            })
+        }
+
+        Object.observe(document, function(e){
+            conole.log('focused', document.activeElement);
+        })
+
+    </script>
+</body>
+</html>
